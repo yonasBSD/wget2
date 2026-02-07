@@ -248,6 +248,8 @@ Sanitizers/Debian:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_TESTING_BUILD
   extends:
     - .defaults
+  tags:
+    - saas-linux-large-amd64  # Fix illegal instruction failures on base runner
   script:
     - export CFLAGS="$CFLAGS_DEFAULT"
     - tar xf wget2-*.gz && rm wget2-*.gz
