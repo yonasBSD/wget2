@@ -37,7 +37,7 @@
 int main(void)
 {
 #if defined WITH_WOLFSSL
-	// Post handhake auth hasn't been implemented for WolfSSL.
+	// Post handshake auth hasn't been implemented for WolfSSL.
 	exit(WGET_TEST_EXIT_SKIP);
 #endif
 
