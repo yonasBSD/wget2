@@ -1311,6 +1311,10 @@ static int openssl_init(SSL_CTX *ctx)
 
 	SSL_CTX_set_purpose(ctx, X509_PURPOSE_SSL_SERVER);
 
+#if OPENSSL_VERSION_NUMBER >= 0x10101000L
+	SSL_CTX_set_post_handshake_auth(ctx, 1);
+#endif
+
 end:
 	return retval;
 }
