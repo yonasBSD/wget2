@@ -34,20 +34,18 @@ case $host_os in
   linux*)
     ;;
   mingw*)
-    XTRA_CFLAGS="-Wno-attributes -fno-PIC"
+    AM_CFLAGS="-Wno-attributes -fno-PIC"
 #    XTRA_LIBS=-lws2_32
     ;;
   cygwin*)
-    XTRA_CFLAGS="-Wno-char-subscripts -fno-PIC"
+    AM_CFLAGS="-Wno-char-subscripts -fno-PIC"
     ;;
 #  *)
 #    AC_MSG_ERROR([$host_os is not currently supported])
 #    ;;
 esac
 
-# Append EXTRA_CFLAGS to CFLAGS, if defined.
-test -n "$EXTRA_CFLAGS" && CFLAGS="$CFLAGS $EXTRA_CFLAGS"
-test -n "$XTRA_CFLAGS" && CFLAGS="$CFLAGS $XTRA_CFLAGS"
+AC_SUBST([AM_CFLAGS])
 
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
