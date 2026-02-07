@@ -69,8 +69,13 @@ int main(void)
 			{ NULL }
 		},
 		WGET_TEST_EXPECTED_FILES, &(wget_test_file_t []) {
+#ifdef WITH_ZLIB
 			// broken.html is created but empty because decompression failed
 			{ "broken.html", "", .content_length = 0 },
+#else
+			// broken.html is saved as-is because gzip is not supported (fallback to identity)
+			{ "broken.html", broken_gzip_body },
+#endif
 			{ "valid.html", valid_body },
 			{ "input.txt", input_file_content },
 			{ NULL }
