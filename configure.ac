@@ -528,7 +528,10 @@ AS_IF([test "$with_ssl" = "gnutls" || test "$with_ssl" = "yes"], [
     with_gnutls_in_testsuite=yes
     AC_DEFINE([WITH_GNUTLS], [1], [Use GnuTLS])
     AC_DEFINE([WITH_GNUTLS_IN_TESTSUITE], [1], [GnuTLS is available for test suite.])
-    AC_SEARCH_LIBS(gnutls_hash, gnutls, [with_gnutls_hash=yes])
+    save_LIBS=$LIBS
+    LIBS="$GNUTLS_LIBS $LIBS"
+    AC_CHECK_FUNC(gnutls_hash, [with_gnutls_hash=yes])
+    LIBS=$save_LIBS
     AS_IF([test "$with_gnutls_hash" = "yes"],
       [AC_CHECK_HEADERS([gnutls/crypto.h], [], [], [#include <gnutls/gnutls.h>])])
     AC_CHECK_HEADERS([gnutls/ocsp.h],
@@ -571,10 +574,13 @@ AS_IF([test "$with_ssl" = "openssl" || (test "$with_ssl" = "yes" && test "$with_
 
     AC_CHECK_FUNCS(SSL_new X509_STORE_add_lookup)
 
-    AC_SEARCH_LIBS(EVP_MD_CTX_new, crypto,
+    save_LIBS=$LIBS
+    LIBS="$OPENSSL_LIBS $LIBS"
+    AC_CHECK_FUNC(EVP_MD_CTX_new,
       [with_libcrypto=yes; AC_DEFINE([WITH_LIBCRYPTO], [1], [Use libcrypto])],
       [with_libcrypto=no; AC_MSG_WARN(*** LIBCRYPTO was not found. Fallback to libwolfcrypt for hashing and checksumming.)
     ])
+    LIBS=$save_LIBS
   ])
 ])
 
@@ -636,11 +642,16 @@ AS_IF([(test "$with_gnutls" != "yes" || test "$with_gnutls_hash" != "yes") && te
   ])
 
   AS_IF([test "$with_libnettle" != "yes"], [
+    OLD_LIBS="$LIBS"
+    LIBS=
     AC_SEARCH_LIBS(gcry_check_version, gcrypt,
       [with_gcrypt=yes; AC_DEFINE([WITH_GCRYPT], [1], [Use libgcrypt]) AC_CHECK_HEADERS([gcrypt.h])],
       [with_gcrypt=no;  AC_MSG_WARN(*** LIBGCRYPT was not found. Fallback to gnulib for hashing and checksumming.)])
+    GCRYPT_LIBS="$LIBS"
+    LIBS="$OLD_LIBS"
   ])
 ])
+AC_SUBST([GCRYPT_LIBS])
 
 AM_CONDITIONAL([WITH_LIBNETTLE], [test "$with_libnettle" = "yes"])
 AM_CONDITIONAL([WITH_CRYPT], [test "$with_gcrypt" = "yes"])
