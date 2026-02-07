@@ -706,6 +706,8 @@ static int tcp_connect(wget_tcp *tcp, struct addrinfo *ai, int sockfd)
 
 	set_socket_timeout(sockfd, tcp->connect_timeout);
 
+	errno = 0;
+
 	/* Enable TCP Fast Open, if required by the user and available */
 #ifdef TCP_FASTOPEN_OSX
 	if (tcp->tcp_fastopen) {
@@ -715,7 +717,6 @@ static int tcp_connect(wget_tcp *tcp, struct addrinfo *ai, int sockfd)
 		tcp->first_send = 0;
 #elif defined TCP_FASTOPEN_LINUX
 	if (tcp->tcp_fastopen) {
-		errno = 0;
 		tcp->connect_addrinfo = ai;
 		rc = 0;
 		tcp->first_send = 1;
@@ -732,7 +733,9 @@ static int tcp_connect(wget_tcp *tcp, struct addrinfo *ai, int sockfd)
 		tcp->first_send = 0;
 	}
 
+	int tmp = errno;
 	set_socket_timeout(sockfd, tcp->timeout);
+	errno = tmp;
 
 	return rc;
 }
