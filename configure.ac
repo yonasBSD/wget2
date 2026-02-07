@@ -21,9 +21,6 @@ m4_pattern_forbid([^_?AX_])
 m4_pattern_allow([AX_CHECK_GNU_MAKE_HEADLINE])
 m4_pattern_allow([_AX_CODE_COVERAGE_GCOV_PROG_WITH])
 
-CFLAGS=$CFLAGS
-LDFLAGS=$LDFLAGS
-
 AC_PREREQ([2.69])
 AC_INIT([wget2],[2.2.1],[bug-wget@gnu.org],[wget2],[https://savannah.gnu.org/projects/wget])
 
