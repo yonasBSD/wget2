@@ -1039,8 +1039,7 @@ static int verify_certificate_callback(gnutls_session_t session)
 	}
 
 	if (config.check_certificate) {
-		int rc;
-		if ((rc = gnutls_x509_crt_check_key_purpose(cert, GNUTLS_KP_TLS_WWW_SERVER, 0)) == 0) {
+		if (gnutls_x509_crt_check_key_purpose(cert, GNUTLS_KP_TLS_WWW_SERVER, 0) == 0) {
 			error_printf_check(_("%s: The certificate is not authorized for server authentication.\n"), tag);
 			goto out;
 		}
