@@ -86,8 +86,8 @@ test_stats_tls_SOURCES = test-stats-tls.c stats-test-util.h
 noinst_LTLIBRARIES = libtest.la
 libtest_la_SOURCES = libtest.c libtest.h
 libtest_la_CPPFLAGS = -I$(srcdir) -I$(top_srcdir)/include/wget -I$(top_builddir)/lib -I$(top_srcdir)/lib $(CFLAG_VISIBILITY) -DBUILDING_LIBWGET \
- -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\"
-libtest_la_LIBADD = ../src/libtest-utils.la ../lib/libgnu.la ../libwget/libwget.la $(MYLIBS)
+ -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\" $(TEST_CFLAGS) $(GNUTLS_CFLAGS)
+libtest_la_LIBADD = ../src/libtest-utils.la ../lib/libgnu.la ../libwget/libwget.la $(MYLIBS) $(TEST_LIBS) $(GNUTLS_LIBS)
 
 EXTRA_DIST = certs gpg valgrind-suppressions clang-asan-suppressions
 

@@ -31,7 +31,10 @@ libwget_libadd = ../lib/libgnu.la $(CODE_COVERAGE_LIBS) \
  $(SETLOCALE_LIB) \
  $(SETLOCALE_NULL_LIB) \
  @INTL_MACOSX_LIBS@ \
- $(ALL_LIBS)
+ $(GNUTLS_LIBS) $(OPENSSL_LIBS) $(WOLFSSL_LIBS) $(NETTLE_LIBS) $(LIBDANE_LIBS) \
+ $(LIBPSL_LIBS) $(LIBHSTS_LIBS) $(LIBNGHTTP2_LIBS) $(LIBIDN2_LIBS) $(LIBIDN_LIBS) \
+ $(LIBPCRE2_LIBS) $(LIBPCRE_LIBS) $(LIBPROXY_LIBS) $(ZSTD_LIBS) $(BROTLIDEC_LIBS) \
+ $(LZMA_LIBS) $(ZLIB_LIBS) $(BZ2_LIBS) $(LZIP_LIBS) $(ALL_LIBS)
 
 lib_LTLIBRARIES = libwget.la
 
@@ -63,7 +66,11 @@ endif
 libwget_la_CPPFLAGS =\
  -fPIC -I$(top_srcdir)/include/wget -I$(srcdir) -I$(top_builddir)/lib -I$(top_srcdir)/lib $(CFLAG_VISIBILITY) -DBUILDING_LIBWGET \
  $(CODE_COVERAGE_CPPFLAGS) \
- -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\"
+ -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\" \
+ $(GNUTLS_CFLAGS) $(OPENSSL_CFLAGS) $(WOLFSSL_CFLAGS) $(NETTLE_CFLAGS) $(LIBDANE_CFLAGS) \
+ $(LIBPSL_CFLAGS) $(LIBHSTS_CFLAGS) $(LIBNGHTTP2_CFLAGS) $(LIBIDN2_CFLAGS) $(LIBIDN_CFLAGS) \
+ $(LIBPCRE2_CFLAGS) $(LIBPCRE_CFLAGS) $(LIBPROXY_CFLAGS) $(ZSTD_CFLAGS) $(BROTLIDEC_CFLAGS) \
+ $(LZMA_CFLAGS) $(ZLIB_CFLAGS) $(BZ2_CFLAGS) $(LZIP_CFLAGS)
 libwget_la_LIBADD = libcsstokenizer.la $(libwget_libadd)
 
 # include ABI version information

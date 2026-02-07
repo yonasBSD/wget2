@@ -87,7 +87,7 @@ libwget_utils_fuzzer_SOURCES = libwget_utils_fuzzer.c $(MAIN)
 libwget_xml_parse_buffer_fuzzer_SOURCES = libwget_xml_parse_buffer_fuzzer.c $(MAIN)
 wget_options_fuzzer_SOURCES = wget_options_fuzzer.c $(MAIN)
 if WITH_GPGME
-  wget_options_fuzzer_LDADD = ../src/gpgme.o
+  wget_options_fuzzer_LDADD = ../src/gpgme.o $(GPGME_LIBS)
 else
   wget_options_fuzzer_LDADD =
 endif

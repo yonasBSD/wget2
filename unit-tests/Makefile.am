@@ -28,12 +28,13 @@ MYLIBS = \
  $(SETLOCALE_LIB) \
  $(SETLOCALE_NULL_LIB) \
  @INTL_MACOSX_LIBS@ \
+ $(GPGME_LIBS) \
  $(LIBS) $(CODE_COVERAGE_LIBS)
 
 AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) $(CODE_COVERAGE_CFLAGS) -DMALLOC_RETURNS_NONNULL
 AM_CPPFLAGS = -I$(top_srcdir)/include/wget -I$(srcdir) -I$(top_builddir)/lib -I$(top_srcdir)/lib \
  -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\" $(CODE_COVERAGE_CPPFLAGS) \
- -DMALLOC_RETURNS_NONNULL
+ -DMALLOC_RETURNS_NONNULL $(GPGME_CFLAGS)
 
 LDADD = ../lib/libgnu.la ../libwget/libwget.la $(MYLIBS)
 

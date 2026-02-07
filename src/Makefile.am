@@ -6,7 +6,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/include/wget -I$(srcdir) -I$(top_builddir)/lib -I$
  $(CODE_COVERAGE_CPPLAGS) \
  -DWGETVER_FILE=\"$(top_builddir)/include/wget/wgetver.h\" \
  -DWGET_PLUGIN_DIR=\"$(libdir)/wget2/plugins\" \
- -DMALLOC_RETURNS_NONNULL
+ -DMALLOC_RETURNS_NONNULL $(GPGME_CFLAGS) \
+ $(LIBPCRE2_CFLAGS) $(LIBPCRE_CFLAGS)
 
 bin_PROGRAMS = wget2 wget2_noinstall
 
@@ -57,6 +58,8 @@ wget2_LDADD = ../lib/libgnu.la ../libwget/libwget.la $(LIBOBJS) \
  $(SETLOCALE_LIB) \
  $(SETLOCALE_NULL_LIB) \
  @INTL_MACOSX_LIBS@ \
+ $(GPGME_LIBS) \
+ $(LIBPCRE2_LIBS) $(LIBPCRE_LIBS) \
  $(LIBS)
 
 wget2_noinstall_SOURCES = $(wget2_SOURCES)
