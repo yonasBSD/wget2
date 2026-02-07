@@ -402,7 +402,7 @@ if test "${ENABLE_XATTR}" = "yes" ; then
   fi
 fi
 
-test "${ENABLE_XATTR}" = "yes" && AC_DEFINE([ENABLE_XATTR], 1,
+test "${ENABLE_XATTR}" = "yes" && AC_DEFINE([ENABLE_XATTR], [1],
     [Define if you want file meta-data storing into POSIX Extended Attributes compiled in.])
 
 #
