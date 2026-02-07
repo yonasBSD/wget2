@@ -21,7 +21,7 @@ m4_pattern_forbid([^_?AX_])
 m4_pattern_allow([AX_CHECK_GNU_MAKE_HEADLINE])
 m4_pattern_allow([_AX_CODE_COVERAGE_GCOV_PROG_WITH])
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 AC_INIT([wget2],[2.2.1],[bug-wget@gnu.org],[wget2],[https://savannah.gnu.org/projects/wget])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -51,8 +51,8 @@ test -n "$XTRA_CFLAGS" && CFLAGS="$CFLAGS $XTRA_CFLAGS"
 
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
-if test "$ac_cv_prog_cc_c99" = "no"; then
-  AC_MSG_ERROR(Compiler does not support C99. Aborting.)
+if test "x$ac_cv_prog_cc_c11" = "xno"; then
+  AC_MSG_ERROR([C11 compiler is required. Aborting.])
 fi
 
 gl_EARLY
@@ -130,8 +130,8 @@ if test -n "$WARN_CFLAGS"; then
     nw="$nw -Wabi" # gcc 8, very noisy
     nw="$nw -Wunused-macros" # triggers in auto-generated lex css parser, #pragma doesn't work, conflicts with -Werror
     nw="$nw -Wchkp" # gcc-9 says: not supported any more (but emits it via -Q --help=C)"
-    nw="$nw -Wc90-c99-compat" # gcc-12, we use C99
-    nw="$nw -Wlong-long" # gcc-12, we use C99
+    nw="$nw -Wc90-c99-compat" # gcc-12, we use C11
+    nw="$nw -Wlong-long" # gcc-12, we use C11
     nw="$nw -Wstrict-flex-arrays" # gcc-13 warns about it
     nw="$nw -Wuseless-cast" # gcc-14 warns about it (pretty useless for portable code)
     nw="$nw -Wc99-c11-compat" # comes with latest gnulib (01.11.2024) generated config.h and gcc 14.2.0
