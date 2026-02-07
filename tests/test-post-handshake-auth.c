@@ -36,6 +36,11 @@
 
 int main(void)
 {
+#if defined WITH_WOLFSSL
+	// Post handhake auth hasn't been implemented for WolfSSL.
+	exit(WGET_TEST_EXIT_SKIP);
+#endif
+
 	wget_test_url_t urls[]={
 		{	.name = "/index.html",
 			.code = "200",
