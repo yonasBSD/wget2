@@ -282,7 +282,7 @@ Scan-Build/Debian:
     expire_in: 2 weeks
     when: on_failure
     paths:
-      - scan-build/**/*
+      - wget2-*/scan-build/**/*
 
 .valgrind:
   stage: stage1-testing
