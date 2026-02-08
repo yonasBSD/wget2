@@ -942,15 +942,22 @@ static int verify_certificate_callback(gnutls_session_t session)
 	/* This verification function uses the trusted CAs in the credentials
 	 * structure. So you must have installed one or more CA certificates.
 	 */
-	if (gnutls_certificate_verify_peers3(session, hostname, &status) != GNUTLS_E_SUCCESS) {
-//		if (wget_get_logger(WGET_LOGGER_DEBUG))
-//			_print_info(session);
+	gnutls_typed_vdata_st data[] = {
+		{
+			.type = GNUTLS_DT_DNS_HOSTNAME,
+			.data = (void *) hostname,
+		},
+		{
+			.type = GNUTLS_DT_KEY_PURPOSE_OID,
+			.data = (void *) GNUTLS_KP_TLS_WWW_SERVER,
+		}
+	};
+	unsigned elements = config.check_certificate ? countof(data) : 1;
+
+	if (gnutls_certificate_verify_peers(session, data, elements, &status) != GNUTLS_E_SUCCESS) {
 		error_printf_check(_("%s: Certificate verification error\n"), tag);
 		goto out;
 	}
-
-//	if (wget_get_logger(WGET_LOGGER_DEBUG))
-//		_print_info(session);
 
 #ifdef WITH_OCSP
 	if (status & GNUTLS_CERT_REVOKED) {
@@ -1036,13 +1043,6 @@ static int verify_certificate_callback(gnutls_session_t session)
 	if ((err = gnutls_x509_crt_import(cert, &cert_list[0], GNUTLS_X509_FMT_DER)) != GNUTLS_E_SUCCESS) {
 		error_printf_check(_("%s: Failed to parse certificate: %s\n"), tag, gnutls_strerror (err));
 		goto out;
-	}
-
-	if (config.check_certificate) {
-		if (gnutls_x509_crt_check_key_purpose(cert, GNUTLS_KP_TLS_WWW_SERVER, 0) == 0) {
-			error_printf_check(_("%s: The certificate is not authorized for server authentication.\n"), tag);
-			goto out;
-		}
 	}
 
 	if (!config.check_hostname || (config.check_hostname && hostname && gnutls_x509_crt_check_hostname(cert, hostname)))
