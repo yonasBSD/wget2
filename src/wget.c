@@ -430,20 +430,33 @@ static int in_directory_pattern_list(const wget_vector *v, const char *fname)
 	return default_exclude;
 }
 
-static bool in_pattern_list(const wget_vector *v, const char *url)
-{
+static bool in_pattern_list_loop(const wget_vector *v, const char *s) {
 	for (int it = 0; it < wget_vector_size(v); it++) {
 		const char *pattern = wget_vector_get(v, it);
 
 		if (strpbrk(pattern, "*?[]")) {
-			if (!fnmatch(pattern, url, config.ignore_case ? FNM_CASEFOLD : 0))
+			if (!fnmatch(pattern, s, config.ignore_case ? FNM_CASEFOLD : 0))
 				return true;
 		} else if (config.ignore_case) {
-			if (wget_match_tail_nocase(url, pattern))
+			if (wget_match_tail_nocase(s, pattern))
 				return true;
-		} else if (wget_match_tail(url, pattern)) {
+		} else if (wget_match_tail(s, pattern)) {
 			return true;
 		}
+	}
+
+	return false;
+}
+
+static bool in_pattern_list(const wget_vector *v, const char *url)
+{
+	if (in_pattern_list_loop(v, url))
+		return true;
+
+	const char *filename = strrchr(url, '/');
+	if (filename && filename[1]) {
+		if (in_pattern_list_loop(v, filename + 1))
+			return true;
 	}
 
 	return false;
